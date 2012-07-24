@@ -38,8 +38,8 @@
                                     var imgd = ctx.getImageData(0, 0, evt.tile.size.w, evt.tile.size.h);
                                     for (var x = 0; x < evt.tile.size.w; x += size) {
                                         for (var y = 0; y < evt.tile.size.h; y += size) {
-                                            var rgba = ctx.getImageData(x, y, 1, 1).data;
-                                            ctx.fillStyle = '#' + rgba[0].toString(16) + rgba[1].toString(16) + rgba[2].toString(16);
+                                            var idx = ((y * evt.tile.size.w) + x) * 4;
+                                            ctx.fillStyle = '#' + imgd.data[idx].toString(16) + imgd.data[idx + 1].toString(16) + imgd.data[idx + 2].toString(16);
                                             ctx.clearRect(x, y, size, size);
                                             ctx.beginPath();
                                             ctx.arc(x + half_size , y + half_size, half_size - 1, 0, Math.PI*2, true);
