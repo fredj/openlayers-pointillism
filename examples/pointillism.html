@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>OpenLayers pointillism Example</title>
+
+    <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css">
+    <link rel="stylesheet" href="http://openlayers.org/dev/examples/style.css" type="text/css">
+
+    <script src="http://openlayers.org/dev/OpenLayers.js"></script>
+
+    <script type="text/javascript">
+        var map;
+
+        function init() {
+            map = new OpenLayers.Map('map', {
+                layers: [
+                    new OpenLayers.Layer.OSM("MapBox Streets", [
+                        'http://a.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
+                        'http://b.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
+                        'http://c.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
+                        'http://d.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png'
+                    ], {
+                        numZoomLevels: 17,
+                        attribution: "<a href='http://mapbox.com/about/maps'>Terms &amp; Feedback</a>",
+                        tileOptions: {
+                            crossOriginKeyword: 'anonymous'
+                        },
+                        eventListeners: {
+                            tileloaded: function(evt) {
+                                var size = 8;
+                                var half_size = size / 2;
+                                var ctx = evt.tile.getCanvasContext();
+                                if (ctx) {
+                                    var imgd = ctx.getImageData(0, 0, evt.tile.size.w, evt.tile.size.h);
+                                    for (var x = 0; x < evt.tile.size.w; x += size) {
+                                        for (var y = 0; y < evt.tile.size.h; y += size) {
+                                            var rgba = ctx.getImageData(x, y, 1, 1).data;
+                                            ctx.fillStyle = '#' + rgba[0].toString(16) + rgba[1].toString(16) + rgba[2].toString(16);
+                                            ctx.clearRect(x, y, size, size);
+                                            ctx.beginPath();
+                                            ctx.arc(x + half_size , y + half_size, half_size - 1, 0, Math.PI*2, true);
+                                            ctx.closePath();
+                                            ctx.fill();
+                                        }
+                                    }
+                                    evt.tile.imgDiv.removeAttribute("crossorigin");
+                                    evt.tile.imgDiv.src = ctx.canvas.toDataURL();
+                                }
+                            }
+                        }
+                    })
+                ]
+            });
+            map.zoomTo(2);
+        }
+    </script>
+  </head>
+  <body onload="init()">
+    <h1 id="title">pointillism example</h1>
+
+    <div id="tags"></div>
+
+    <p id="shortdesc"></p>
+
+    <div id="map" class="smallmap"></div>
+    <div id="docs"></div>
+  </body>
+</html>
