@@ -24,17 +24,11 @@
         function init() {
             map = new OpenLayers.Map('map', {
                 layers: [
-                    new OpenLayers.Layer.OSM("MapBox Streets", [
-                        'http://a.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
-                        'http://b.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
-                        'http://c.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png',
-                        'http://d.tiles.mapbox.com/v3/mapbox.mapbox-streets/${z}/${x}/${y}.png'
+                    new OpenLayers.Layer.OSM("osm", [
+                      'http://a.tile.openstreetmap.org/${z}/${x}/${y}.png',
+                      'http://b.tile.openstreetmap.org/${z}/${x}/${y}.png',
+                      'http://c.tile.openstreetmap.org/${z}/${x}/${y}.png'
                     ], {
-                        numZoomLevels: 17,
-                        attribution: "<a href='http://mapbox.com/about/maps'>Terms &amp; Feedback</a>",
-                        tileOptions: {
-                            crossOriginKeyword: 'anonymous'
-                        },
                         eventListeners: {
                             tileloaded: function(evt) {
                                 var size = 8;
